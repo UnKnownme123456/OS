@@ -1,0 +1,425 @@
+//Ass2 SetA 
+#include<stdio.h>
+#include<unistd.h>            // for fork(),exclp()
+#include<fcntl.h>        // O_RDONLY
+#include<stdlib.h>      //exit()
+void count(char c, char *fn)
+{
+	int lc=0,wc=0,cc=0,handle;
+	char ch;
+	if((handle=open(fn,O_RDONLY))==-1)
+	{
+		printf("File %s not found\n",fn);
+		return;
+	}
+	while(read(handle,&ch,1)!=0)
+	{
+		if(ch==' '|| ch=='\n')
+			wc++;
+                else 
+			cc++;
+
+		if(ch=='\n')
+			lc++;
+	}
+	close(handle);
+	switch(c)
+	{
+	case 'c':
+			printf("Total No.of Characters = %d\n",cc);
+			break;
+	case 'w':
+			printf("Total No.of Words = %d\n",wc);
+			break;
+	case 'l':
+			printf("Total No.of Lines = %d\n",lc);
+			break;
+	}
+}
+
+main()
+{
+	char command[80],t1[20],t2[20],t3[20],t4[20];
+	int n;
+	system("clear");
+	while(1)
+	{
+		printf("myShell$");
+		//fflush(stdin);
+		fgets(command,80,stdin);
+		n = sscanf(command,"%s %s %s %s",t1,t2,t3,t4);
+		switch(n)
+		{
+		case 1:
+                         if(strcmp(t1,"exit")==0)
+                                 exit(1);      
+			if(!fork())
+			{
+				execlp(t1,NULL);
+				perror(t1);
+			}
+			break;
+		case 2:
+			if(!fork())
+			{
+				execlp(t1,t2,NULL);
+				perror(t1);
+			}
+			break;
+		case 3:
+			if(strcmp(t1,"count")==0)
+				count(t2[0],t3);
+			else
+			{
+				if(!fork())
+				{
+					execlp(t1,t2,t3,NULL);
+					perror(t1);
+				}
+			}
+			break;
+		case 4:
+			if(!fork())
+			{
+				execlp(t1,t1,t2,t3,t4,NULL);
+				perror(t1);
+			}
+		}
+	}
+}
+
+
+//Ass2 SetB
+#include<stdio.h>
+#include<sys/stat.h> //S_IFREG
+#include<unistd.h>  //exclp()
+#include<dirent.h>   //DIR
+#include<stdlib.h>  //exit()
+void list(char c, char *dn)
+{
+	DIR *dir;
+	int cnt=0;
+	struct dirent *entry;
+	struct stat buff;
+	if((dir=opendir(dn))==NULL)
+	{
+		printf("Directory %s not found\n",dn);
+		return;
+	}
+	switch(c)
+	{
+	case 'f':
+		while((entry=readdir(dir))!=NULL)
+		{
+			stat(entry->d_name,&buff);  //display file or file system status
+			if(S_IFREG&buff.st_mode)
+				printf("%s\n",entry->d_name);
+		}
+		break;
+	case 'n':
+		while((entry=readdir(dir))!=NULL)
+			cnt++;
+		printf("Total No.of Entries = %d\n",cnt);
+		break;
+	case 'i':
+		while((entry=readdir(dir))!=NULL)
+		{
+			stat(entry->d_name,&buff);
+			if(S_IFREG&buff.st_mode)
+				printf("%s\t%d\n",entry->d_name,buff.st_ino);
+		}
+		break;
+	default:
+		printf("Invalid argument...\n");
+	}
+	closedir(dir);
+}
+
+main()
+{
+	char command[80],t1[20],t2[20],t3[20],t4[20];
+	int n;
+	system("clear");
+	while(1)
+	{
+		printf("myShell$");
+		fflush(stdin);
+		fgets(command,80,stdin);
+		n = sscanf(command,"%s %s %s %s",t1,t2,t3,t4);
+		switch(n)
+		{
+		case 1:if(strcmp(t1,"exit")==0)
+                                 exit(1);      
+			if(!fork())
+			{
+				execlp(t1,t1,NULL);
+				perror(t1);
+			}
+			break;
+		case 2:
+			if(!fork())
+			{
+				execlp(t1,t1,t2,NULL);
+				perror(t1);
+			}
+			break;
+		case 3:
+			if(strcmp(t1,"list")==0)
+				list(t2[0],t3);
+			else
+			{
+				if(!fork())
+				{
+					execlp(t1,t1,t2,t3,NULL);
+					perror(t1);
+				}
+			}
+			break;
+		case 4:
+			if(!fork())
+			{
+				execlp(t1,t1,t2,t3,t4,NULL);
+				perror(t1);
+			}
+		}
+	}
+}
+
+INPUT
+
+myShell$ list  	f list.c                    
+Directory list.c not found
+myShell$ list list.c
+myShell$list: No such file or directory
+myShell$ list f TY
+TYMarks.java
+TYMarks.java~
+TYMarks.class
+myShell$ list n TY
+Total No.of Entries =3
+myShell$ list i TY
+TYMarks.java	261272
+TYMarks.java~	261272
+TYMarks.class	242575
+myShell$
+
+
+
+//Ass2 SetC Q2
+#include<stdio.h>
+#include<unistd.h> //execlp()
+#include<fcntl.h>  //O_RDONLY
+#include<stdlib.h>  //exit()
+#include<string.h>  //strstr()
+
+void search(char c, char *s, char *fn)
+{
+	int handle,i=1,cnt=0,j=0;
+	char ch,buff[80],*p;
+	if((handle=open(fn,O_RDONLY))==-1)
+	{
+		printf("File %s not found\n",fn);
+		return;
+	}
+	switch(c)
+	{
+	case 'f':
+		while(read(handle,&ch,1)!=0)
+		{
+			if(ch=='\n')
+			{
+				buff[j]='\0';
+				j=0;
+				if(strstr(buff,s)!=NULL)
+				{
+					printf("%d : %s\n",i,buff);
+					break;
+				}
+				i++;
+			}
+			else
+				buff[j++]=ch;
+		}
+		break;
+	case 'c':
+		while(read(handle,&ch,1)!=0)
+		{
+			if(ch=='\n')
+			{
+				buff[j]='\0';
+				j=0;
+				if(strstr(buff,s)!=NULL)
+				{
+					p=buff;
+					while((p=strstr(p,s))!=NULL)
+					{
+						cnt++;
+						p++;
+					}
+				}
+			}
+			else
+				buff[j++]=ch;
+		}
+		printf("Total No.of Occurrences = %d\n",cnt);
+		break;
+	case 'a':
+		while(read(handle,&ch,1)!=0)
+		{
+			if(ch=='\n')
+			{
+				buff[j]='\0';
+				j=0;
+				if(strstr(buff,s)!=NULL)
+					printf("%d : %s\n",i,buff);
+				i++;
+			}
+			else
+				buff[j++]=ch;
+		}
+	}
+	close(handle);
+}
+
+main()
+{
+	char command[80],t1[20],t2[20],t3[20],t4[20];
+	int n;
+	system("clear");
+	while(1)
+	{
+		printf("myShell$");
+		fflush(stdin);
+		fgets(command,80,stdin);
+		n = sscanf(command,"%s %s %s %s",t1,t2,t3,t4);
+		switch(n)
+		{
+		case 1:if(strcmp(t1,"exit")==0)
+                                 exit(1);  
+			if(!fork())
+			{
+				execlp(t1,t1,NULL);
+				perror(t1);
+			}
+			break;
+		case 2:
+			if(!fork())
+			{
+				execlp(t1,t1,t2,NULL);
+				perror(t1);
+			}
+			break;
+		case 3:
+			if(!fork())
+			{
+				execlp(t1,t1,t2,t3,NULL);
+				perror(t1);
+			}
+			break;
+		case 4:
+			if(strcmp(t1,"search")==0)
+				search(t2[0],t3,t4);
+			else
+			{
+				if(!fork())
+				{
+					execlp(t1,t1,t2,t3,t4,NULL);
+					perror(t1);
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+#include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+#include<string.h>
+
+
+void typeline(char *tok2,char *tok3){
+char ch,str[30];
+int lc=0,s,count=0;
+FILE *fp;
+fp = fopen(tok3,"r");
+if(fp == NULL){
+printf("File does not exist.\n");
+}else{
+printf("File exist\n");
+}
+if(strcmp(tok2,"a") == 0){
+while(!feof(fp)){
+ch = fgetc(fp);
+printf("%c",ch);
+}
+}
+else{
+int n = atoi(tok2);
+if(n>0){
+while(lc<n){
+ch = fgetc(fp);
+if(ch == '\n')
+lc++;
+printf("%c",ch);
+}
+}
+if(n<0){
+while(!feof(fp)){
+ch = fgetc(fp);
+if(ch == '\n')
+lc++;
+}
+s = lc + n;
+s++;
+fseek(fp,0,SEEK_SET);
+while(!feof(fp)){
+ch = fgetc(fp);
+while (count!=s)
+{
+ch = fgetc(fp);
+if(ch == '\n')
+count++;
+}
+printf("%c",ch);
+}
+}
+}
+}
+int main(){
+char tok1[10],tok2[10],tok3[10],tok4[10],cmd[30];
+int choice;
+while(1){
+printf("\n$MYShell$:");
+gets(cmd);
+if(strcmp(cmd,"exit") == 0){
+exit(0);
+}
+int choice = sscanf(cmd,"%s%s%s%s",&tok1,&tok2,&tok3,&tok4);
+if(strcmp(tok1,"typeline") == 0){
+typeline(tok2,tok3);
+continue;
+}
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
