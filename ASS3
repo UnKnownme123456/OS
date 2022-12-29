@@ -1,4 +1,5 @@
 //Ass3 SetA Q1
+//FCFS
 #include<stdio.h>
 #include<string.h>
 struct process
@@ -102,6 +103,7 @@ int main()
 
 
 //Ass3 SetA Q2
+//SJF(Non Preemptive)
 #include<stdio.h>
 #include<string.h>
 struct process
@@ -220,6 +222,7 @@ void nsjf()
 
 
 //Ass3 SetB Q1
+//SJF(Preemptive)
 #include<stdio.h>
 #include<string.h>
 struct Input
@@ -368,6 +371,7 @@ int main()
 
 
 //Ass3 SetB Q2
+//Priority scheduling (Non Preemptive)
 #include<stdio.h>
 int main()
 {
@@ -409,6 +413,7 @@ int main()
 
 
 //Ass3 SetC Q1
+//Priority scheduling (Preemptive)
 #include<stdio.h>
 int main()
 {
@@ -453,6 +458,7 @@ int main()
 
 
 //Ass3 SetC Q2
+// RR (Round Robin)
 #include<stdio.h>
 int main()
 {
