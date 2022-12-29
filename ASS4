@@ -1,0 +1,406 @@
+//Ass4 SetA Q1
+#include<stdio.h>
+int main()
+{
+int i,j,n,a[50],frame[10],no,k,avail,count=0;
+   	printf("\n ENTER THE NUMBER OF PAGES:\n");
+scanf("%d",&n);
+   	printf("\n ENTER THE PAGE NUMBER :\n");
+   	for(i=1;i<=n;i++)
+   	scanf("%d",&a[i]);
+   	printf("\n ENTER THE NUMBER OF FRAMES :");
+   	scanf("%d",&no);
+for(i=0;i<no;i++)
+    	frame[i]= -1;
+            j=0;
+    		printf("\t ref string\t page frames\n");
+for(i=1;i<=n;i++)
+    		{
+     			printf("%d\t\t",a[i]);
+     			avail=0;
+     			for(k=0;k<no;k++)
+if(frame[k]==a[i])
+                			avail=1;
+     			if (avail==0)
+      			{
+       				frame[j]=a[i];
+ 				j=(j+1)%no;
+       				count++;
+     				for(k=0;k<no;k++)
+     				printf("%d\t",frame[k]);
+}
+     			printf("\n");
+}
+     		printf("Page Fault Is %d",count);
+     		return 0;
+}
+
+
+//Ass4 SetA Q2
+#include<stdio.h>
+main()
+{
+int q[20],p[50],c=0,c1,d,f,i,j,k=0,n,r,t,b[20],c2[20];
+printf("Enter no of pages:");
+scanf("%d",&n);
+printf("Enter the reference string:");
+for(i=0;i<n;i++)
+        	scanf("%d",&p[i]);
+printf("Enter no of frames:");
+scanf("%d",&f);
+q[k]=p[k];
+printf("\n\t%d\n",q[k]);
+c++;
+k++;
+for(i=1;i<n;i++)
+ 	{
+  		c1=0;
+  		for(j=0;j<f;j++)
+    		{
+      			if(p[i]!=q[j])
+      			c1++;
+    		}
+  		if(c1==f)
+    		{
+     			c++;
+     			if(k<f)
+     			{
+      				q[k]=p[i];
+      				k++;
+      				for(j=0;j<k;j++)
+        				printf("\t%d",q[j]);
+        				printf("\n");
+     			}
+     			else
+        			{
+          				for(r=0;r<f;r++)
+            			{
+             				c2[r]=0;
+             				for(j=i-1;j<n;j--)
+              				{
+                				if(q[r]!=p[j])
+                				c2[r]++;
+                				else
+                				break;
+              			}
+            		}
+        			for(r=0;r<f;r++)
+          			 b[r]=c2[r];
+          			for(r=0;r<f;r++)
+          			{
+            			for(j=r;j<f;j++)
+              			{
+                				if(b[r]<b[j])
+                 				{
+                  					t=b[r];
+                  					b[r]=b[j];
+                   					b[j]=t;
+                 				}
+              			}
+          			}
+          			for(r=0;r<f;r++)
+           			{
+            			if(c2[r]==b[0])
+              			q[r]=p[i];
+              			printf("\t%d",q[r]);
+           			}
+           			printf("\n");
+        		}
+     	}
+}
+printf("\nThe no of page faults is %d",c);
+}
+
+
+//Ass4 SetB Q1
+#include<stdio.h>
+#include<conio.h>
+int n,page[20],f,fr[20],i;
+void display()
+{
+       for(i=0;i<f;i++)
+      {
+          printf("%d",fr[i]);
+      }
+      printf("\n");
+}
+void request()
+{
+     printf("enter no.of pages:");
+     scanf("%d",&n);
+     printf("enter no.of frames:");
+     scanf("%d",&f);
+     printf("enter no.of page no.s");
+     for(i=0;i<n;i++)
+    {
+       scanf("%d",&page[i]);
+     }
+    for(i=0;i<n;i++)
+    {
+         fr[i]=-1;
+    }
+ }
+void replace()
+{
+     int j,flag=0,pf=0;
+     int max,lp[10],index,m;
+     for(j=0;j<f;j++)
+    {
+        fr[j]=page[j];
+        flag=1;
+        pf++;
+       display();
+    }
+    for(j=f;j<n;j++)
+    {
+      flag=0;
+      for(i=0;i<f;i++)
+     {
+          if(fr[i]==page[j])
+         {
+            flag=1;
+             break;
+          }
+     }
+     if(flag==0)
+    {
+           for(i=0;i<f;i++)
+           lp[i]=0;
+          for(i=0;i<f;i++)
+         {
+              for(m=j+1;m<n;m++)
+             {
+                  if(fr[i]==page[m])
+                {
+                     lp[i]=m-j;
+                    break;
+                }
+            }
+         }
+    max=lp[0];
+    index=0;
+    for(i=0;i<f;i++)
+    {
+      if(lp[i]==0)
+     {
+        index=i;
+        break;
+      }
+      else
+      {
+          if(max<lp[i])
+         {
+            max=lp[i];
+            index=i;
+          }
+       }
+     }
+   fr[index]=page[j];
+   pf++;
+   display();
+ }
+}
+printf("page faults:%d",pf);
+}
+void main()
+{
+   clrscr();
+   request();
+   replace();
+   getch();
+}
+
+Output:
+7,0,1,2,3,0,4,2,3,0,3,2,1,2,0,1,7,0,1
+1)FIFO
+2)LRU
+3)Optimal
+4)MRU
+No of frames=03
+
+
+ MRU most recently used
+
+1 2 3 4 1 2 5 1 2 3 4 5
+1 1 1 1 1 1 1 1 2 3 3 3 
+  2 2 2 2 2 5 5 5 5 5 5   
+    3 4 4 4 4 4 4 4 4 4
+        * *   *     * * 
+
+total no of page fault=07
+
+
+//Ass4 SetB Q2
+/* MFU paging algorithm */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int nFrames;
+struct PAGETABLE
+{
+	int fno, valid, frequency;
+} *pageTable;
+
+int *frameTable;
+int pageString[] = {9,14,10,11,15,9,11,9,15,10,9,15,10,12,15};
+
+struct node
+{
+	int pno;
+	struct node *next;
+} *head, *end;
+
+void Append(int pno)
+{	
+	struct node *newnode;
+	newnode = malloc(sizeof(struct node));
+	newnode->pno = pno;
+	newnode->next = NULL;
+	if( head == NULL )
+		head = end = newnode;
+	else
+	{
+		end->next = newnode;
+		end = newnode;
+	}
+}
+
+int selectVictim()
+{
+	struct node *t1 = head, *t2 = head, *p1,*p2;
+	int maxFrequency = pageTable[t1->pno].frequency;
+	int pno;
+	p1 = t1;
+	t1 = t1->next;
+	while( t1 )
+	{
+		if( pageTable[t1->pno].frequency > maxFrequency )
+		{
+			maxFrequency = pageTable[t1->pno].frequency;
+			p2 = p1;
+			t2 = t1;
+		}
+		p1 = t1;	
+		t1 = t1->next;
+	}
+
+	if( t2 == head )
+		head = t2->next;
+	else
+	if( t2 != head )
+	{
+		p2->next = t2->next;
+		if ( t2 == end )
+			end = p2;
+	}
+	
+	pno = t2->pno;
+	free(t2);
+	return pno;
+}
+
+void gotoxy(int r,int c)
+{
+	printf("\033[%d;%df",r,c);
+}
+
+void Display()
+{
+	struct node *temp = head;
+	gotoxy(1,15);
+	printf("[");
+	while( temp )
+	{
+		printf("%d(%d),",temp->pno,pageTable[temp->pno].frequency);
+		temp = temp->next;
+	}	
+	printf("]        ");
+}
+
+int getFreeFrame()
+{
+	int i;
+	for(i=0; i<nFrames; i++)
+	{
+		if( frameTable[i] == -1 )
+			return i;
+	}
+	return -1;
+}
+
+main()
+{
+	int i,max=0,r=5,c=1,j,pageFault=0,demandedPage,victimPage,fno; 
+	printf("enter number of frames : ");
+	scanf("%d",&nFrames);
+	system("clear");
+
+	for(i=0; i<sizeof(pageString)/sizeof(int); i++)
+	{	
+		if( pageString[i] > max )
+			max = pageString[i];
+	}
+
+	pageTable = malloc(sizeof(struct PAGETABLE) * (max+1));
+	frameTable = malloc(sizeof(int) * nFrames);
+	
+	for(i=0; i<=max; i++)
+	{
+		pageTable[i].valid = 0;	
+		pageTable[i].frequency = 0;	
+	}
+
+	for(i=0; i<nFrames; i++)
+		frameTable[i] = -1;
+
+	for(i=0; i<sizeof(pageString)/sizeof(int); i++)
+	{
+		demandedPage = pageString[i];	
+		gotoxy(r,c);
+		printf("%2d",demandedPage);
+		if( pageTable[demandedPage].valid == 1 )
+			pageTable[demandedPage].frequency++;
+		else
+		if( pageTable[demandedPage].valid == 0 )		
+		{
+			pageFault++;
+			pageTable[demandedPage].frequency++;
+			fno = getFreeFrame();
+			if( fno != -1 )
+			{
+				pageTable[demandedPage].fno = fno;
+				pageTable[demandedPage].valid = 1;
+				frameTable[fno] = demandedPage;
+			}
+			else
+			{
+				victimPage = selectVictim();
+				pageTable[demandedPage].fno = pageTable[victimPage].fno;
+				pageTable[victimPage].valid = 0;
+				pageTable[demandedPage].valid = 1;
+				frameTable[ pageTable[victimPage].fno] = demandedPage;
+			}
+
+			Append(demandedPage);
+			for(j=0; j<nFrames; j++)
+			{
+				gotoxy(r+2, c);
+				if( frameTable[j] != -1 )
+					printf("%2d",frameTable[j]);
+				r++; 
+			}
+		}
+		r=5;
+		c+=3;
+		Display();
+		getchar();getchar();
+	}
+
+gotoxy(15,1);
+printf("Total Page Faults Observed : %d\n", pageFault);
+}
+
+
+
+
