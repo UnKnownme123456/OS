@@ -1,41 +1,72 @@
 //PHP
 Q1)
-<html> 
-<head> 
-<title>slip 1</title> 
-<style> 
-body{background-color: yellow;} 
-table {background-color: turquoise;} 
-h3 { font-size: 6pt; color:red;} 
-</style> 
-</head> 
-<body> 
-<center> 
-<h3> Project Management </h3> 
-<table border="3" height="200px" width="400px"> 
-<form name=frmlogin><br> 
-<tr><td>Enter Project Name:</td><td><input type=text name=t1 
-placeholder=projectname><br><br></td></tr> 
-<tr><td>Assignned to:</td><td><select name="Names" id="nm" form="frmlogin"> 
- <option value="ross">Ross Geller</option> 
- <option value="chuck">Chuck Bass</option> 
- <option value="rachel">Rachel Green </option> 
- <option value="dan">Dan James</option> 
-</select></td></tr>
-<tr><td>Start Date:</td><td><input type="date" ></td></tr> 
-<tr><td>End Date:</td><td><input type="date"> </td></tr> 
- <tr><td>Priority:</td><br> 
- <td><input type=radio name=ck value="high">High<br> 
- <input type=radio name=ck value="avg">Average <br> 
- <input type=radio name=ck value="low">Low</td></tr> 
- <tr><td>Description:</td><td><input type=text name="dt" 
-value="description"></td></tr> 
- <tr><td><input type=submit value ="submit"></td> 
- <td><input type=reset value ="clear"></td></tr> 
- </table> 
-</center> 
- </body> 
- </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head><center>
+    <style>
+        body{background-color: yellow;}
+
+
+        fieldset{background-color: turquoise;}
+        
+        h2{font-size: 4vmin;color: red;}
+        
+        
+        .button {
+                     background-color: #4CAF50; /* Green */
+                        border: none;
+                        color: white;
+                        padding: 5px 7px;
+                        text-align: center;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-size: 12px;
+                        margin: 4px 2px;
+                        cursor: pointer;
+}
+.button2 {background-color: blue;
+    border: none;
+    color: white;
+    padding: 5px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;}
+    </style>
+
+
+<body><center>
+    <h2>Project Management</h2>
+    <fieldset style="width: 20%;">
+        <ul style="list-style-type: none;">
+        <li> Project Name&nbsp;<input type="txt" placeholder="project name"></li><br>
+        <li>Assigned to&nbsp; <select name="Names" id="nm" form="frmlogin">
+            <option value="Er Merry Petision">Er Merry Petision</option>
+            <option value="saab">Saab</option>
+            <option value="opel">Opel</option>
+            <option value="audi">Audi</option>
+          </select></li><br>
+          <li> Start Date&nbsp;<input type="date" placeholder="project name"></li><br>
+          <li> End Date&nbsp;<input type="date" placeholder="project name"></li><br>
+          <li>Priority <input type="radio">High
+            <input type="radio">Average
+            <input type="radio">Low
+        
+        </li><br>
+        <li> Description&nbsp;<textarea placeholder="type here..."></textarea><br>
+        
+        <button class="button">Submit</div> 
+            <button class="button2">reset</div> 
+    </body></center>
+    </fieldset> 
+</html>
 
 
 
