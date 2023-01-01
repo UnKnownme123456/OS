@@ -1,0 +1,63 @@
+//PHP
+Q1)
+<html> 
+<head> 
+<title>slip 1</title> 
+<style> 
+body{background-color: yellow;} 
+table {background-color: turquoise;} 
+h3 { font-size: 6pt; color:red;} 
+</style> 
+</head> 
+<body> 
+<center> 
+<h3> Project Management </h3> 
+<table border="3" height="200px" width="400px"> 
+<form name=frmlogin><br> 
+<tr><td>Enter Project Name:</td><td><input type=text name=t1 
+placeholder=projectname><br><br></td></tr> 
+<tr><td>Assignned to:</td><td><select name="Names" id="nm" form="frmlogin"> 
+ <option value="ross">Ross Geller</option> 
+ <option value="chuck">Chuck Bass</option> 
+ <option value="rachel">Rachel Green </option> 
+ <option value="dan">Dan James</option> 
+</select></td></tr>
+<tr><td>Start Date:</td><td><input type="date" ></td></tr> 
+<tr><td>End Date:</td><td><input type="date"> </td></tr> 
+ <tr><td>Priority:</td><br> 
+ <td><input type=radio name=ck value="high">High<br> 
+ <input type=radio name=ck value="avg">Average <br> 
+ <input type=radio name=ck value="low">Low</td></tr> 
+ <tr><td>Description:</td><td><input type=text name="dt" 
+value="description"></td></tr> 
+ <tr><td><input type=submit value ="submit"></td> 
+ <td><input type=reset value ="clear"></td></tr> 
+ </table> 
+</center> 
+ </body> 
+ </html>
+
+
+
+
+
+//DS
+Q2A)
+ import pandas as pd
+import matplotlib.pyplot as plt
+d = pd.read_csv('C:\\Users\\DELL\\Untitled Folder\\Iris.csv')
+ax=plt.subplots(1,1,figsize=(10,8)) //defines size of chart area
+d['Species'].value_counts().plot.pie() //counts distinct values in dataset
+plt.title("Iris Species %")
+plt.show()
+
+Q2B)
+ import pandas as p
+df = pd.read_csv('C:\\Users\\DELL\\winequality-red.csv')
+df.shape # no.of rows & cols
+df.describe() #stats data
+df.info() #features
+df.dtypes
+
+
+
